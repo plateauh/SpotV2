@@ -13,8 +13,16 @@ import android.util.Log;
 //https://www.allcodingtutorials.com/post/insert-delete-update-and-view-data-in-sqlite-database-android-studio
 
 public class database extends SQLiteOpenHelper {
-    public database( Context context ) {
+    private static database instance;
+
+    private database(Context context) {
         super(context, "Spot.db", null, 1);
+    }
+
+    public static database getInstance(Context context){
+        if (instance == null)
+            instance = new database(context);
+        return instance;
     }
 
     @Override
@@ -22,8 +30,6 @@ public class database extends SQLiteOpenHelper {
         db.execSQL("create Table users( username TEXT primary key, password VARCHAR(8),ghostMood BOOLEAN, profileImg BLOB)");
         db.execSQL("create Table groups(groupId integer primary key autoincrement,groupName TEXT)");
         db.execSQL("create Table userGroups(username TEXT, groupId integer, PRIMARY KEY(username, groupId))");
-
-
     }
 
     @Override
@@ -273,7 +279,16 @@ public class database extends SQLiteOpenHelper {
         return groupID;
     }
 
-
+    public boolean login(String username, String password){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        String query = "SELECT * FROM users WHERE username = "+username;
+        Cursor cursor = DB.rawQuery(query, null);
+        if (cursor.getCount() == 0 || cursor == null) return false;
+        int index = cursor.getColumnIndexOrThrow("password");
+        String actualPass = cursor.getString(index);
+        if (!password.equals(actualPass)) return false;
+        return true;
+    }
 
 
 }
