@@ -14,11 +14,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spot">
-        <activity android:name=".SignUpActivity"></activity>
+        <activity android:name=".SignUpActivity"
+           ></activity>
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".ChangeUsernameActivity" />
-        <activity android:name=".ChangePasswordActivity" />
+        <activity android:name=".SettingsActivity"
+            android:theme="@style/Theme.Spot.NoActionBar"/>
+        <activity android:name=".ChangeUsernameActivity"
+            android:theme="@style/Theme.Spot.NoActionBar"/>
+        <activity android:name=".ChangePasswordActivity"
+            android:theme="@style/Theme.Spot.NoActionBar"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

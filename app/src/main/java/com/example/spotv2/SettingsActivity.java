@@ -1,6 +1,8 @@
 package com.example.spotv2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +13,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.mikhaellopez.circularimageview.CircularImageView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.navigation.fragment.NavHostFragment;
@@ -18,6 +22,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -30,22 +35,24 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Blob;
 
 public class SettingsActivity extends AppCompatActivity {
-
+//
     TableRow changPassRow;
     TableRow changeUsernameRow;
     Switch ghostModeToggle;
     ImageView profileImg;
     int SELECT_PICTURE = 200;
-
-    database DB;//to be deleted
+    SharedPreferences preferences;
+    database DB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       Toolbar toolbar = findViewById(R.id.toolbar);
+       setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
 
         //settings options
@@ -54,6 +61,9 @@ public class SettingsActivity extends AppCompatActivity {
         ghostModeToggle = findViewById(R.id.ghostModeToggle);
         profileImg = findViewById(R.id.profile_img);
         DB = new database(this);
+        preferences = getSharedPreferences(
+                "com.example.spotv2", Context.MODE_PRIVATE);
+
         setUserImage();
 
         Boolean result = DB.insertUser("najd","Najd@123",false,this);
@@ -98,10 +108,17 @@ public class SettingsActivity extends AppCompatActivity {
         ghostModeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 
-//                myLocationOverlay.disableCompass();
-//                myLocationOverlay.disableMyLocation();
+                if(isChecked){
+                    preferences.edit().putBoolean("isGhostMode",true).apply();
+                }else{
+                    preferences.edit().putBoolean("isGhostMode",false).apply();
+
+                }
+                Log.i("isGoste",""+preferences.getBoolean("isGhostMode",false));
 
             }
+
+
         });
 
 
@@ -159,9 +176,15 @@ public class SettingsActivity extends AppCompatActivity {
             Bitmap bm = BitmapFactory.decodeByteArray(blob, 0, blob.length);
             profileImg.setImageBitmap(bm);
         }
+    }
 
-
-
-
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
