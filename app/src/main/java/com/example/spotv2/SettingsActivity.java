@@ -62,17 +62,7 @@ public class SettingsActivity extends AppCompatActivity {
         profileImg = findViewById(R.id.profile_img);
         DB = DB.getInstance(this);
         preferences = getSharedPreferences(
-                "com.example.spotv2", Context.MODE_PRIVATE);
-
-        setUserImage();
-
-        Boolean result = DB.insertUser("najd","Najd@123",false,this);
-
-        if(result)
-            Toast.makeText(this,"inserted",Toast.LENGTH_SHORT);
-        else
-            Toast.makeText(this,"error",Toast.LENGTH_SHORT);
-
+                "MyPrefs", Context.MODE_PRIVATE);
 
 
         //options activities
@@ -154,7 +144,8 @@ public class SettingsActivity extends AppCompatActivity {
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                         byte[] img = DbBitmapUtility.getBytes(bitmap);
-                        DB.updateUserImg(img, "najd");
+                        String username = preferences.getString("usernameKey","");
+                        DB.updateUserImg(img, username);
                         Toast.makeText(this,"profile Image updated successful", Toast.LENGTH_SHORT ).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -167,7 +158,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void setUserImage(){
 
-        Cursor cursor = DB.getUser("najd");
+        String username = preferences.getString("usernameKey","");
+        Cursor cursor = DB.getUser(username);
         while (cursor.moveToNext()){
 
             int index;
