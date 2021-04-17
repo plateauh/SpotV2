@@ -25,6 +25,13 @@
     <string name="changeUserName">change user name</string>
     <string name="resetUserName">Change user name</string>
     <string name="newUserName">enter new user name</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="login">Log in</string>
+    <string name="username">User name</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="dont">You dont have an account?</string>
+    <string name="dodo">Already have an account?</string>
+    <string name="welcome">Welcome!</string>
+    <string name="loginsubtitle">Log in to track your friends!</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

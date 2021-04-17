@@ -19,7 +19,7 @@ public class database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create Table users( username TEXT primary key, password VARCHAR(8),ghostMood BOOLEAN, profileImg BLOB)");
+        db.execSQL("create Table users( username TEXT primary key, password VARCHAR(8),ghostMood BOOLEAN, profileImg BLOB, currentLat DOUBLE, currentLng DOUBLE)");
         db.execSQL("create Table groups(groupId integer primary key autoincrement,groupName TEXT)");
         db.execSQL("create Table userGroups(username TEXT, groupId integer, PRIMARY KEY(username, groupId))");
 
@@ -31,9 +31,26 @@ public class database extends SQLiteOpenHelper {
         db.execSQL("drop Table if exists users");
         db.execSQL("drop Table if exists groups");
         db.execSQL("drop Table if exists userGroups");
-
     }
 
+    public Boolean updateUserLocation(String username, double currentLat, double currentLng)
+    {
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("currentLat", currentLat);
+        contentValues.put("currentLng", currentLng);
+        Cursor cursor = DB.rawQuery("Select * from users where username = ?", new String[]{username});
+        if (cursor.getCount() > 0) {
+            long result = DB.update("users", contentValues, "username =?", new String[]{username});
+            if (result == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
 
     public Boolean insertUser(String username, String password , boolean ghostMood, Context context)
     {
@@ -271,6 +288,18 @@ public class database extends SQLiteOpenHelper {
 
         }
         return groupID;
+    }
+
+
+    public boolean login(String username, String password){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        String query = "SELECT * FROM users WHERE username = "+username;
+        Cursor cursor = DB.rawQuery(query, null);
+        if (cursor.getCount() == 0 || cursor == null) return false;
+        int index = cursor.getColumnIndexOrThrow("password");
+        String actualPass = cursor.getString(index);
+        if (!password.equals(actualPass)) return false;
+        return true;
     }
 
 
