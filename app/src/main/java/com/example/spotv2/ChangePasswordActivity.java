@@ -45,7 +45,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPass2 = findViewById(R.id.newPass2);
         cancelPassButton = findViewById(R.id.cancelPassButton);
         changePassButton = findViewById(R.id.changePassButton);
-        DB = DB.getInstance(this);
+        DB = new database(this);
 
         dialogsBuilder();
 

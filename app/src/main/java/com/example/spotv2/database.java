@@ -13,23 +13,17 @@ import android.util.Log;
 //https://www.allcodingtutorials.com/post/insert-delete-update-and-view-data-in-sqlite-database-android-studio
 
 public class database extends SQLiteOpenHelper {
-    private static database instance;
-
-    private database(Context context) {
+    public database( Context context ) {
         super(context, "Spot.db", null, 1);
-    }
-
-    public static database getInstance(Context context){
-        if (instance == null)
-            instance = new database(context);
-        return instance;
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create Table users( username TEXT primary key, password VARCHAR(8),ghostMood BOOLEAN, profileImg BLOB)");
+        db.execSQL("create Table users( username TEXT primary key, password VARCHAR(8),ghostMood BOOLEAN, profileImg BLOB, currentLat DOUBLE, currentLng DOUBLE)");
         db.execSQL("create Table groups(groupId integer primary key autoincrement,groupName TEXT)");
         db.execSQL("create Table userGroups(username TEXT, groupId integer, PRIMARY KEY(username, groupId))");
+
+
     }
 
     @Override
@@ -40,6 +34,24 @@ public class database extends SQLiteOpenHelper {
 
     }
 
+    public Boolean updateUserLocation(String username, double currentLat, double currentLng)
+    {
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("currentLat", currentLat);
+        contentValues.put("currentLng", currentLng);
+        Cursor cursor = DB.rawQuery("Select * from users where username = ?", new String[]{username});
+        if (cursor.getCount() > 0) {
+            long result = DB.update("users", contentValues, "username =?", new String[]{username});
+            if (result == -1) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return false;
+        }
+    }
 
     public Boolean insertUser(String username, String password , boolean ghostMood, Context context)
     {
@@ -280,14 +292,15 @@ public class database extends SQLiteOpenHelper {
     }
 
     public boolean login(String username, String password){
-        SQLiteDatabase DB = this.getWritableDatabase();
-        String query = "SELECT * FROM users WHERE username = "+username;
-        Cursor cursor = DB.rawQuery(query, null);
-        if (cursor.getCount() == 0 || cursor == null) return false;
-        int index = cursor.getColumnIndexOrThrow("password");
-        String actualPass = cursor.getString(index);
-        if (!password.equals(actualPass)) return false;
-        return true;
+        Cursor cursor = getUser(username);
+        if (cursor.moveToFirst() && cursor.getCount() >= 1){
+            do {
+                int index = cursor.getColumnIndexOrThrow("password");
+                String actualPass = cursor.getString(index);
+                if (password.equals(actualPass)) return true;
+            } while(cursor.moveToNext());
+        }
+        return false;
     }
 
 

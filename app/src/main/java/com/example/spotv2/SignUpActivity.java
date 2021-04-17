@@ -23,7 +23,9 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        DB = DB.getInstance(this);
+        DB = new database(this);
+
+
 
         usernameEdit = findViewById(R.id.username);
         emailEdit = findViewById(R.id.EmailAddress);

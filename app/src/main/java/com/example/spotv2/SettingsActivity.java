@@ -60,7 +60,7 @@ public class SettingsActivity extends AppCompatActivity {
         changeUsernameRow = findViewById(R.id.changeUsernameRow);
         ghostModeToggle = findViewById(R.id.ghostModeToggle);
         profileImg = findViewById(R.id.profile_img);
-        DB = DB.getInstance(this);
+        DB = new database(this);
         preferences = getSharedPreferences(
                 "MyPrefs", Context.MODE_PRIVATE);
 

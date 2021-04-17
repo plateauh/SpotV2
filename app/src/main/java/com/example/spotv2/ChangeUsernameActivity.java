@@ -42,7 +42,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         newUsername = findViewById(R.id.newUsername);
         cancelUserNameButton = findViewById(R.id.cancelUserNameButton);
         changeUsernameButton = findViewById(R.id.changeUsernameButton);
-        DB = DB.getInstance(this);
+        DB = new database(this);
 
         username.setText("najd");
         DialogsBuilder();
