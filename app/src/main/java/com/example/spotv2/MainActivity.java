@@ -26,6 +26,17 @@ public class MainActivity extends AppCompatActivity {
         if(isServicesOK()){
             init();
         }
+
+        // to LatLat's work
+        Button btnSettings = (Button) findViewById(R.id.btnSettings);
+        btnSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     //go to the map class button
