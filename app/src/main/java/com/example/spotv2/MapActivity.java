@@ -2,6 +2,7 @@ package com.example.spotv2;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -35,25 +36,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     //vars
     private Boolean mLocationPermissionsGranted = false;
-    private GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-
-
-
-
-
-    private void initMap(){
-        Log.d(TAG, "initMap: initializing map");
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(MapActivity.this);
-    }
-
-
+    GoogleMap mMap;
     LocationManager locationmanager;
     Location userLocation;
     String provider;
     double lat;
     double lng;
+
+   //Latifah
+    boolean isGhostMode = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +56,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         provider = LocationManager.GPS_PROVIDER;
         getLocationPermission();
     }
+
+    private void initMap(){
+        Log.d(TAG, "initMap: initializing map");
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(MapActivity.this);
+    }
+
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
@@ -77,36 +76,47 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         lng = userLocation.getLongitude();
         // Add a marker in your device location and move the camera
         LatLng devLoc = new LatLng(lat, lng);
-        mMap.setMyLocationEnabled(true);
+
+        //Latifah
+        mMap.setMyLocationEnabled(!isGhostMode);
+
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        //those lat and lng MUST be from DB  + userName
         LatLng Thurya = new LatLng(24.686460, 46.840670);
         float color= 210;
         mMap.addMarker(new MarkerOptions()
                 .position(Thurya).icon(BitmapDescriptorFactory.defaultMarker(color))
                 .title("Thurya is here "));
+
+        //those lat and lng MUST be from DB  + userName
         LatLng Fay = new LatLng(24.687966, 46.840708);
         float color5= 180;
         mMap.addMarker(new MarkerOptions()
                 .position(Fay).icon(BitmapDescriptorFactory.defaultMarker(color5))
                 .title("Fay is here "));
 
+        //those lat and lng MUST be from DB + userName
         LatLng Nouf = new LatLng(24.690178, 46.840063);
         float color2= 120;
         mMap.addMarker(new MarkerOptions()
                 .position(Nouf).icon(BitmapDescriptorFactory.defaultMarker(color2))
                 .title("Nouf is here "));
 
+        //those lat and lng MUST be from DB  + userName
         LatLng Latifah = new LatLng(24.690918, 46.841349);
         float color3= 260;
         mMap.addMarker(new MarkerOptions()
                 .position(Latifah).icon(BitmapDescriptorFactory.defaultMarker(color3))
                 .title("Latifah is here "));
 
+        //those lat and lng MUST be from DB + userName
         LatLng Najd = new LatLng(24.6908935, 46.8410352);
         float color4= 240;
         mMap.addMarker(new MarkerOptions()
                 .position(Najd).icon(BitmapDescriptorFactory.defaultMarker(color4))
                 .title("Najd is here "));
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(devLoc));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         mMap.getUiSettings().setZoomControlsEnabled(true);
