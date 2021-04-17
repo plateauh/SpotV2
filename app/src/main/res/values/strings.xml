@@ -1,3 +1,30 @@
 <resources>
-    <string name="app_name">SpotV2</string>
+    <string name="app_name">Spot</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_change_password">ChangePasswordActivity</string>
+    <string name="title_activity_change_username">ChangeUsernameActivity</string>
+    <string name="wait_spinner">"password changed successfully "</string>
+    <string name="resetPassword">Change Password</string>
+    <string name="currentPass">current password</string>
+    <string name="enterCurrentPass">enter current Password</string>
+    <string name="newPass">new password</string>
+    <string name="enterNewPass">enter new password</string>
+    <string name="reNewPass">reenter new password</string>
+    <string name="enterReNewPass">reenter new passowrd</string>
+    <string name="cancel">cancle</string>
+    <string name="save">save</string>
+    <string name="currentUserName">current user name</string>
+    <string name="changeUserName">change user name</string>
+    <string name="resetUserName">Change user name</string>
+    <string name="newUserName">enter new user name</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
