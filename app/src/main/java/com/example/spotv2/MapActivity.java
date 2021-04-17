@@ -2,6 +2,7 @@ package com.example.spotv2;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -35,25 +36,16 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     //vars
     private Boolean mLocationPermissionsGranted = false;
-    private GoogleMap mMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
-
-
-
-
-
-    private void initMap(){
-        Log.d(TAG, "initMap: initializing map");
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(MapActivity.this);
-    }
-
-
+    GoogleMap mMap;
     LocationManager locationmanager;
     Location userLocation;
     String provider;
     double lat;
     double lng;
+
+   //Latifah
+    boolean isGhostMode = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +56,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         provider = LocationManager.GPS_PROVIDER;
         getLocationPermission();
     }
+
+    private void initMap(){
+        Log.d(TAG, "initMap: initializing map");
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        mapFragment.getMapAsync(MapActivity.this);
+    }
+
     public void onMapReady(GoogleMap googleMap) {
 
         mMap = googleMap;
@@ -77,7 +76,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         lng = userLocation.getLongitude();
         // Add a marker in your device location and move the camera
         LatLng devLoc = new LatLng(lat, lng);
-        mMap.setMyLocationEnabled(true);
+
+        //Latifah
+        mMap.setMyLocationEnabled(!isGhostMode);
+
         mMap.getUiSettings().setZoomControlsEnabled(true);
         LatLng Thurya = new LatLng(24.686460, 46.840670);
         float color= 210;
