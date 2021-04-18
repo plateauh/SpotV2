@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,22 +19,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomePage2Activity extends AppCompatActivity {
-
+    View settingsItem;
     database db = new database(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page2);
-//        Toolbar toolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         Intent intent = new Intent(this, createGroupForm.class);
 
         db.insertUser("Nouf Ali","123123",false,this);
         String[] users = {"Nouf Ali"};
-        db.createGroup("family",users);
-        db.createGroup("friends",users);
-        db.createGroup("collages",users);
+//        db.createGroup("friends",users);
 
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,14 +55,14 @@ public class HomePage2Activity extends AppCompatActivity {
 
 
         Cursor result = db.getUserGroups("Nouf Ali");
-        int[] groups = null;
-        String[] groupName = null;
+        int[] groups = new int[]{};
+        String[] groupName = new String[]{};
 
         int i = 0;
         if (result.moveToFirst() && result.getCount() >= 1){
             groupName= new String[result.getCount()];
             groups= new int[result.getCount()];
-            while(result.moveToNext()) {
+            do {
                 int index;
                 index = result.getColumnIndexOrThrow("groupId");
                 int id = result.getInt(index);
@@ -73,10 +72,8 @@ public class HomePage2Activity extends AppCompatActivity {
                 String Name = result.getString(index);
                 groupName[i++]=Name;
 
-            }
-
+            } while (result.moveToNext());
         }
-        System.out.println(groups[0]+"  "+groups[1]);
         result.close();
 
 
@@ -102,4 +99,18 @@ public class HomePage2Activity extends AppCompatActivity {
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
     }*/
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.action_settings: {
+                Intent intent = new Intent(this, SettingsActivity.class);
+                startActivity(intent);
+                return true;
+            }
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
