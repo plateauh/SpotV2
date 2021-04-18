@@ -76,7 +76,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         sharedPreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-       isGhostMode= sharedPreferences.getBoolean("isGhostMode", true);
+       isGhostMode= sharedPreferences.getBoolean("isGhostMode", false);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         context = this;
         repeateAlarm();
@@ -108,7 +108,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Add a marker in your device location and move the camera
         LatLng devLoc = new LatLng(lat, lng);
-        mMap.setMyLocationEnabled(isGhostMode);
+
+        System.out.println("isGhostMode"+isGhostMode);
+        if(!isGhostMode){
+            System.out.println("isGhostMode"+isGhostMode);
+        mMap.setMyLocationEnabled(true);}
+
         mMap.getUiSettings().setZoomControlsEnabled(true);
 
         String currentUser = sharedPreferences.getString("usernameKey", "");
@@ -122,7 +127,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     int lng2 = cursor.getColumnIndexOrThrow("currentLng");
                     double lng = cursor.getDouble(lng2);
                     if(!currentUser.equals(username)){
-
                     if(DB.updateUserLocation(username,24.686460, 46.840670)){
                         autoUpdate = new Timer();
                         autoUpdate.schedule(new TimerTask() {

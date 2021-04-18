@@ -94,6 +94,9 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
 
+        boolean ghostM = preferences.getBoolean("isGhostMode",false);
+
+        ghostModeToggle.setChecked(ghostM);
 
         ghostModeToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
