@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -48,7 +49,7 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView idText;
-
+        Button inviteBtn;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -63,6 +64,12 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
                 }
             });
             idText = itemView.findViewById(R.id.groupName);
+            inviteBtn = itemView.findViewById(R.id.invite);
+            inviteBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(context, InviteFormActivity.class);
+                intent.putExtra("groupID", GroupsIDs[getAdapterPosition()]);
+                context.startActivity(intent);
+            });
         }
     }
 

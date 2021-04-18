@@ -23,8 +23,8 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/groupName"
-            android:layout_width="143dp"
-            android:layout_height="72dp"
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
             android:layout_gravity="center_vertical|center_horizontal"
             android:layout_margin="10dp"
             android:padding="10dp"
@@ -33,11 +33,25 @@
 
         </com.google.android.material.textview.MaterialTextView>
 
+        <Button
+            android:id="@+id/invite"
+            android:layout_width="75dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="130dp"
+            android:text="@string/invite"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="10sp">
+
+        </Button>
+
         <LinearLayout
             android:id="@+id/members"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="horizontal"></LinearLayout>
+            android:orientation="horizontal">
+
+        </LinearLayout>
 
 
     </LinearLayout>

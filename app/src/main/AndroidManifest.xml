@@ -14,11 +14,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Spot">
-        <activity android:name=".HomePage2Activity"
-            android:theme="@style/Theme.Spot.NoActionBar">
-        </activity>
-        <activity android:name=".createGroupForm"
-            android:theme="@style/Theme.Spot.NoActionBar"/>
+        <activity android:name=".InviteFormActivity"></activity>
+        <activity
+            android:name=".HomePage2Activity"
+            android:theme="@style/Theme.Spot.NoActionBar"></activity>
+        <activity
+            android:name=".createGroupForm"
+            android:theme="@style/Theme.Spot.NoActionBar" />
 
         <receiver
             android:name=".updateCurrentLocations"
