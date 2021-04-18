@@ -1,6 +1,8 @@
 package com.example.spotv2;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,6 +29,8 @@ public class ChangeUsernameActivity extends AppCompatActivity {
     Button changeUsernameButton;
     AlertDialog.Builder saveChangesDialog;
     AlertDialog.Builder cancelChangesDialog;
+    SharedPreferences preferences;
+    String loggedInUser;
     database DB;
 
     @Override
@@ -43,8 +47,10 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         cancelUserNameButton = findViewById(R.id.cancelUserNameButton);
         changeUsernameButton = findViewById(R.id.changeUsernameButton);
         DB = new database(this);
-
-        username.setText("najd");
+        preferences = getSharedPreferences(
+                "MyPrefs", Context.MODE_PRIVATE);
+        loggedInUser = preferences.getString("usernameKey","");
+        username.setText(loggedInUser);
         DialogsBuilder();
 
         changeUsernameButton.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +90,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                         boolean isDataUpdated = DB.updateUserName(currentUsername , updatedUserName);
                         if(isDataUpdated) {
                             Toast.makeText(ChangeUsernameActivity.this, "Username Updated", Toast.LENGTH_SHORT).show();
+                            preferences.edit().putString("usernameKey",newUsername.getText().toString()).apply();
                             finish();                        }else {
                             Toast.makeText(ChangeUsernameActivity.this, "Oops, there is an error", Toast.LENGTH_SHORT).show();
                         }
@@ -122,5 +129,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

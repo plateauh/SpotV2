@@ -11,6 +11,7 @@
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:id="@+id/profile_img"
+        app:civ_border_color="@color/purple_app_bar"
         app:layout_constraintBottom_toTopOf="@+id/tableLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
