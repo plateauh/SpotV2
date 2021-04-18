@@ -40,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
                 boolean isRegistered = DB.insertUser(username, password, false, this);
                 if (isRegistered){
                     Toast.makeText(this, "Congratulations! You're now a member of Spot!", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(this, MainActivity.class);
+                    Intent intent = new Intent(this, HomePage2Activity.class);
                     startActivity(intent);
                     finish();
                 }

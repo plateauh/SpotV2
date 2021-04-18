@@ -1,6 +1,8 @@
 package com.example.spotv2;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
@@ -19,7 +21,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomePage2Activity extends AppCompatActivity {
-    View settingsItem;
+    SharedPreferences sharedpreferences;
     database db = new database(this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,7 @@ public class HomePage2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         Intent intent = new Intent(this, createGroupForm.class);
+
 
         db.insertUser("Nouf Ali","123123",false,this);
         String[] users = {"Nouf Ali"};
@@ -109,8 +112,22 @@ public class HomePage2Activity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
             }
+            case R.id.action_logout: {
+                logout();
+                return true;
+            }
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void logout(){
+        sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.clear();
+        editor.commit();
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

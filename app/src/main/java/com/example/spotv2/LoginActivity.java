@@ -25,13 +25,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        sharedpreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        if (loggedIn()){
+            Intent intent = new Intent(this, HomePage2Activity.class);
+            startActivity(intent);
+            finish();
+        }
         DB = new database(this);
 
         usernameEdit = findViewById(R.id.username);
         passwordEdit = findViewById(R.id.Password);
 
-        sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         loginBtn = findViewById(R.id.loginbtn);
         loginBtn.setOnClickListener(v -> {
             String username = usernameEdit.getText().toString();
@@ -41,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (isValidCredentials){
                     Toast.makeText(this, "Welcome back "+username+"!", Toast.LENGTH_SHORT).show();
                     insertSharedPrefs(username, password);
-                    Intent intent = new Intent(this, MainActivity.class);
+                    Intent intent = new Intent(this, HomePage2Activity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -81,5 +85,11 @@ public class LoginActivity extends AppCompatActivity {
         editor.putString("usernameKey", username);
         editor.putString("passwordKey", password);
         editor.commit();
+    }
+
+    protected boolean loggedIn(){
+        String user = sharedpreferences.getString("usernameKey","");
+        if (user.isEmpty()) return false;
+        return true;
     }
 }
