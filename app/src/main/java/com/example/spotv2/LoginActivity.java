@@ -2,9 +2,12 @@ package com.example.spotv2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,11 +23,12 @@ public class LoginActivity extends AppCompatActivity {
     Button loginBtn;
 
     SharedPreferences sharedpreferences;
-
+    NotificationManager notificationManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        createNotificationChannel();
         sharedpreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         if (loggedIn()){
             Intent intent = new Intent(this, HomePage2Activity.class);
@@ -92,4 +96,23 @@ public class LoginActivity extends AppCompatActivity {
         if (user.isEmpty()) return false;
         return true;
     }
+
+
+    public void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("foo", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager = getSystemService(NotificationManager.class);
+
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
 }

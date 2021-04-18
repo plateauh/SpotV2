@@ -49,7 +49,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-
+    int groupID;
 
     private void initMap() {
 
@@ -73,6 +73,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         boolean isGhostMode = sharedPreferences.getBoolean("isGhostMode", true);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         context = this;
+        Intent intent = getIntent();
+        groupID = intent.getIntExtra("groupID",0);
         repeateAlarm();
 
         locationmanager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -193,6 +195,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         AlarmManager am=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, updateCurrentLocations.class);
+        i.putExtra("groupID",groupID);
+        i.putExtra("lat",lat);
+        i.putExtra("lng",lng);
         final PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
         am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60, pi);
     }

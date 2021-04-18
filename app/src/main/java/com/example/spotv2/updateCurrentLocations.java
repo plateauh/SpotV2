@@ -15,9 +15,9 @@ public class updateCurrentLocations extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         database DB = new database(context);
-        int groupId = 0;
-        double current_user_lat = 0.0;
-        double current_user_lng = 0.0;
+        int groupId = intent.getIntExtra("groupID",0);
+        double current_user_lat = intent.getDoubleExtra("groupID",0);
+        double current_user_lng = intent.getDoubleExtra("groupID",0);
         Cursor users = DB.getUsersInGroup(groupId);
 
         try{
