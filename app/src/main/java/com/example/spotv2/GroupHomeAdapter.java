@@ -4,12 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,7 +64,9 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
                 public void onClick(View v) {
                     //go to group
                     Intent intent = new Intent(context, MapActivity.class);
+                    Log.i("Adapter","GroupID: "+ GroupsIDs[getAdapterPosition()]);
                     intent.putExtra("groupID", GroupsIDs[getAdapterPosition()]);
+                    Log.i("Adapter class","GroupID: "+ GroupsIDs[getAdapterPosition()]);
 
                     context.startActivity(intent);
                 }
@@ -79,9 +83,15 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
                 @Override
                 public void onClick(View v) {
                     String username = sharedpreferences.getString("usernameKey","");
-                    DB.deleteUserGroup(username, GroupsIDs[getAdapterPosition()]);
-                    Intent intent = new Intent(context, HomePage2Activity.class);
-                    context.startActivity(intent);
+                    boolean isDeleted = DB.deleteUserGroup(username, GroupsIDs[getAdapterPosition()]);
+                    if (isDeleted){
+                        Toast.makeText(context, "You left "+GroupNames[getAdapterPosition()], Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(context, HomePage2Activity.class);
+                        context.startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(context, "An error occurred, please try again.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }

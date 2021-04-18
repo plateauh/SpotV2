@@ -47,4 +47,6 @@
     <string name="menu_slideshow">Slideshow</string>
     <string name="logout">Logout</string>
     <string name="invite">Invite</string>
+    <string name="channel_name">Spot</string>
+    <string name="channel_description">Spot</string>
 </resources>

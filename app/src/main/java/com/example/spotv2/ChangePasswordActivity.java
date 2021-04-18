@@ -1,6 +1,8 @@
 package com.example.spotv2;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -27,6 +29,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
     Button changePassButton;
     AlertDialog.Builder saveChangesDialog;
     AlertDialog.Builder cancelChangesDialog;
+    SharedPreferences preferences;
+    String loggedInUser;
     database DB;
 
     @Override
@@ -45,6 +49,8 @@ public class ChangePasswordActivity extends AppCompatActivity {
         newPass2 = findViewById(R.id.newPass2);
         cancelPassButton = findViewById(R.id.cancelPassButton);
         changePassButton = findViewById(R.id.changePassButton);
+        preferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        loggedInUser = preferences.getString("usernameKey","");
         DB = new database(this);
 
         dialogsBuilder();
@@ -164,12 +170,12 @@ public class ChangePasswordActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
 
-                        String username = "latifahAlomar4"; //get from db
                         String newPass = newPass2.getText().toString();// the one entered by the user
 
-                        boolean isDataUpdated = DB.updatePass( username , newPass);
+                        boolean isDataUpdated = DB.updatePass( loggedInUser , newPass);
                         if (isDataUpdated) {
                             Toast.makeText(ChangePasswordActivity.this, "Password Updated", Toast.LENGTH_SHORT).show();
+                            preferences.edit().putString("passwordKey",newPass).apply();
                             finish();
                         } else {
                             Toast.makeText(ChangePasswordActivity.this, "Oops, there is an error", Toast.LENGTH_SHORT).show();

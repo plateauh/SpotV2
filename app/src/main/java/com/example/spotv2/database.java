@@ -19,11 +19,14 @@ public class database extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create Table users( username TEXT primary key, password VARCHAR(8),ghostMood BOOLEAN, profileImg BLOB, currentLat DOUBLE, currentLng DOUBLE)");
+        db.execSQL("create Table users(username TEXT primary key, password VARCHAR(8),ghostMood BOOLEAN, profileImg BLOB, currentLat DOUBLE, currentLng DOUBLE)");
         db.execSQL("create Table groups(groupId integer primary key autoincrement,groupName TEXT)");
-        db.execSQL("create Table userGroups(username TEXT, groupId integer, PRIMARY KEY(username, groupId))");
-
-
+        // FOREIGN KEY(username) REFERENCES users(username) on update cascade
+        // FOREIGN KEY(username) REFERENCES users(username) on delete cascade on update cascade
+        db.execSQL("create Table userGroups(username TEXT, groupId integer, " +
+                "FOREIGN KEY(username) REFERENCES users(username) on delete cascade on update cascade, " +
+                "FOREIGN KEY(groupId) REFERENCES groups(groupId) on delete cascade on update cascade, " +
+                "PRIMARY KEY(username, groupId))");
     }
 
     @Override
@@ -118,6 +121,7 @@ public class database extends SQLiteOpenHelper {
             if (result == -1) {
                 return false;
             } else {
+                updateUserGroups(username, newUsername);
                 return true;
             }
         } else {
@@ -303,5 +307,16 @@ public class database extends SQLiteOpenHelper {
         return false;
     }
 
-
+    public void updateUserGroups(String oldUser, String newUser){
+        SQLiteDatabase DB = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("username", newUser);
+        Cursor groups = getUserGroups(oldUser);
+        int index;
+        if (groups.moveToFirst() && groups.getCount() > 0){
+            do {
+                DB.update("userGroups", contentValues, "username =?", new String[]{oldUser});
+            } while (groups.moveToNext());
+        }
+    }
 }

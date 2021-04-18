@@ -3,6 +3,7 @@ package com.example.spotv2;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.location.Location;
 import android.util.Log;
@@ -11,18 +12,21 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 public class updateCurrentLocations extends BroadcastReceiver {
-
+    SharedPreferences sharedPreferences;
     @Override
     public void onReceive(Context context, Intent intent) {
+        sharedPreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         database DB = new database(context);
-        int groupId = 0;
-        double current_user_lat = 0.0;
-        double current_user_lng = 0.0;
+        int groupId = intent.getIntExtra("groupID",0);
+
+        double current_user_lat = sharedPreferences.getFloat("lat", 0);
+        double current_user_lng = sharedPreferences.getFloat("lng", 0);
+        Log.i("info inside broadcast", "Group ID: "+groupId+" lat: "+current_user_lat+" lng: "+current_user_lng);
         Cursor users = DB.getUsersInGroup(groupId);
 
         try{
-            if (users.getCount() > 0) {
-                while(users.moveToNext()) {
+            if (users.moveToFirst() && users.getCount() > 0) {
+                do {
                     int index_username = users.getColumnIndexOrThrow("username");
                     int index_lat = users.getColumnIndexOrThrow("currentLat");
                     int index_lng = users.getColumnIndexOrThrow("currentLng");
@@ -33,18 +37,17 @@ public class updateCurrentLocations extends BroadcastReceiver {
                     float[] results = new float[1];
                     Location.distanceBetween(current_user_lat, current_user_lng,
                             lat, lng, results);
+                    Log.i("distance", ""+results[0]);
 
-                    if(results[0] > 500){
+                    if(results[0] > 1){
                         longDistanceNotification(context, username);
                     }
-                }
+                } while(users.moveToNext());
             }
 
         }finally{
             users.close();
         }
-
-
 
 
     }

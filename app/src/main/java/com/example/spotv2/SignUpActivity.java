@@ -2,7 +2,9 @@ package com.example.spotv2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,11 +20,13 @@ public class SignUpActivity extends AppCompatActivity {
     EditText usernameEdit, emailEdit, passwordEdit;
     Button signupBtn;
 
+    SharedPreferences sharedpreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+        sharedpreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         DB = new database(this);
 
 
@@ -39,6 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
             if (isValidUsername(username) && isValidEmail(email) && isValidPassword(password)){
                 boolean isRegistered = DB.insertUser(username, password, false, this);
                 if (isRegistered){
+                    insertSharedPrefs(username, password);
                     Toast.makeText(this, "Congratulations! You're now a member of Spot!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(this, HomePage2Activity.class);
                     startActivity(intent);
@@ -109,5 +114,12 @@ public class SignUpActivity extends AppCompatActivity {
         }
 
         return true;
+    }
+
+    protected void insertSharedPrefs(String username, String password){
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("usernameKey", username);
+        editor.putString("passwordKey", password);
+        editor.commit();
     }
 }

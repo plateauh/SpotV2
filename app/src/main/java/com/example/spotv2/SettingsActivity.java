@@ -43,6 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
     int SELECT_PICTURE = 200;
     SharedPreferences preferences;
     database DB;
+    String loggedInUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +64,8 @@ public class SettingsActivity extends AppCompatActivity {
         DB = new database(this);
         preferences = getSharedPreferences(
                 "MyPrefs", Context.MODE_PRIVATE);
+        loggedInUser = preferences.getString("usernameKey","");
+        setUserImage();
 
 
         //options activities
@@ -161,8 +164,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     public void setUserImage(){
 
-        String username = preferences.getString("usernameKey","");
-        Cursor cursor = DB.getUser(username);
+        Cursor cursor = DB.getUser(loggedInUser);
         while (cursor.moveToNext()){
 
             int index;
