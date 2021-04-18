@@ -31,33 +31,17 @@ public class HomePage2Activity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         Intent intent = new Intent(this, createGroupForm.class);
+        sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
 
-
-        db.insertUser("Nouf Ali","123123",false,this);
-        String[] users = {"Nouf Ali"};
+//        db.insertUser("Nouf Ali","123123",false,this);
+//        String[] users = {"Nouf Ali"};
 //        db.createGroup("friends",users);
 
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(intent);
-            }
-        });
- /*       DrawerLayout drawer = findViewById(R.id.drawer_layout);
-      //  NavigationView navigationView = findViewById(R.id.nav_view);
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
-        mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
-                .setDrawerLayout(drawer)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);*/
-        // NavigationUI.setupWithNavController(navigationView, navController);
+        fab.setOnClickListener(view -> startActivity(intent));
 
-
-        Cursor result = db.getUserGroups("Nouf Ali");
+        String username = sharedpreferences.getString("usernameKey","");
+        Cursor result = db.getUserGroups(username);
         int[] groups = new int[]{};
         String[] groupName = new String[]{};
 
@@ -122,7 +106,6 @@ public class HomePage2Activity extends AppCompatActivity {
     }
 
     public void logout(){
-        sharedpreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
         editor.clear();
         editor.commit();

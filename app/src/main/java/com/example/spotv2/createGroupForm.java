@@ -2,6 +2,7 @@ package com.example.spotv2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -15,13 +16,14 @@ import androidx.appcompat.widget.Toolbar;
 public class createGroupForm extends AppCompatActivity {
 
     database db = new database(this);
-
+    SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group_form);
 //        setView();
+        sharedpreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         Button create = (Button) findViewById(R.id.create);
         create.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,9 +44,9 @@ public class createGroupForm extends AppCompatActivity {
         EditText editText=findViewById(R.id.NameGroupInput);
         String GroupName=editText.getText().toString();
 
-        String currentUser= "Nouf Ali";
+        String currentUser= sharedpreferences.getString("usernameKey","");
         String[] members = {currentUser};
-        boolean iscreated = db.createGroup(GroupName,members);
+        boolean iscreated = db.createGroup(GroupName, members);
         Context context = getApplicationContext();
 
         int duration = Toast.LENGTH_SHORT;

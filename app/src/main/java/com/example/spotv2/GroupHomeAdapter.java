@@ -55,7 +55,6 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
                     //go to group
                     Intent intent = new Intent(context, MapActivity.class);
                     intent.putExtra("groupID", GroupsIDs[getAdapterPosition()]);
@@ -63,8 +62,6 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
                     context.startActivity(intent);
                 }
             });
-
-
             idText = itemView.findViewById(R.id.groupName);
         }
     }
