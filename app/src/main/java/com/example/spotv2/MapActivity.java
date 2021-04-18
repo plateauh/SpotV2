@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -36,6 +37,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private static final String TAG = "MapActivity";
     Context context;
     database DB;
+    SharedPreferences sharedPreferences;
+
     private static final String FINE_LOCATION = Manifest.permission.ACCESS_FINE_LOCATION;
     private static final String COURSE_LOCATION = Manifest.permission.ACCESS_COARSE_LOCATION;
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1234;
@@ -66,6 +69,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
+        sharedPreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        boolean isGhostMode = sharedPreferences.getBoolean("isGhostMode", true);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         context = this;
         repeateAlarm();
@@ -89,11 +94,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         userLocation = locationmanager.getLastKnownLocation(provider);
         lat = userLocation.getLatitude();
         lng = userLocation.getLongitude();
-
-
-
-//        Log.d(TAG, );
-
 
         // Add a marker in your device location and move the camera
         LatLng devLoc = new LatLng(lat, lng);
