@@ -167,7 +167,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             DB = new database(context);
             double current_lat = location.getLatitude();
             double current_lng = location.getLongitude();
-            String username = "username";
+            String username = sharedPreferences.getString("usernameKey", "");
             boolean isUpdated = DB.updateUserLocation(username, current_lat, current_lng);
         }
 
