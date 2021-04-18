@@ -7,10 +7,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -83,7 +85,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void onMapReady(GoogleMap googleMap) {
-
+        DB = new database(context);
         mMap = googleMap;
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
@@ -99,34 +101,97 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng devLoc = new LatLng(lat, lng);
         mMap.setMyLocationEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-        LatLng Thurya = new LatLng(24.686460, 46.840670);
-        float color = 210;
-        mMap.addMarker(new MarkerOptions()
-                .position(Thurya).icon(BitmapDescriptorFactory.defaultMarker(color))
-                .title("Thurya is here "));
-        LatLng Fay = new LatLng(24.687966, 46.840708);
-        float color5 = 180;
-        mMap.addMarker(new MarkerOptions()
-                .position(Fay).icon(BitmapDescriptorFactory.defaultMarker(color5))
-                .title("Fay is here "));
+         //DB.insertUser("Thurya","123",false,context);
+        if(DB.updateUserLocation("Thurya",24.686460, 46.840670)){
+            Cursor cursor = DB.getUser("Thurya");
+            int index;
+            cursor.moveToFirst();
+                index = cursor.getColumnIndexOrThrow("currentLat");
+                System.out.println("index"+index);
+                double lat = cursor.getDouble(index);
+                index = cursor.getColumnIndexOrThrow("currentLng");
+                System.out.println("index2"+index);
+                double lng = cursor.getDouble(index);
 
-        LatLng Nouf = new LatLng(24.690178, 46.840063);
-        float color2 = 120;
-        mMap.addMarker(new MarkerOptions()
-                .position(Nouf).icon(BitmapDescriptorFactory.defaultMarker(color2))
-                .title("Nouf is here "));
+            LatLng Thurya = new LatLng(lat, lng);
+            float color = 210;
+            mMap.addMarker(new MarkerOptions()
+                    .position(Thurya).icon(BitmapDescriptorFactory.defaultMarker(color))
+                    .title("Thurya is here "));
+        }
+        DB.insertUser("Fay","123",false,context);
+        if(DB.updateUserLocation("Fay",24.687966, 46.840708)){
+            Cursor cursor = DB.getUser("Fay");
+            int index;
+            cursor.moveToFirst();
+            index = cursor.getColumnIndexOrThrow("currentLat");
+            System.out.println("index"+index);
+            double lat = cursor.getDouble(index);
+            index = cursor.getColumnIndexOrThrow("currentLng");
+            System.out.println("index2"+index);
+            double lng = cursor.getDouble(index);
 
-        LatLng Latifah = new LatLng(24.690918, 46.841349);
-        float color3 = 260;
-        mMap.addMarker(new MarkerOptions()
-                .position(Latifah).icon(BitmapDescriptorFactory.defaultMarker(color3))
-                .title("Latifah is here "));
+            LatLng Fay = new LatLng(lat, lng);
+            float color5 = 180;
+            mMap.addMarker(new MarkerOptions()
+                    .position(Fay).icon(BitmapDescriptorFactory.defaultMarker(color5))
+                    .title("Fay is here "));
+        }
+        DB.insertUser("Nouf","123",false,context);
+        if(DB.updateUserLocation("Nouf",24.690178, 46.840063)){
+            Cursor cursor = DB.getUser("Nouf");
+            int index;
+            cursor.moveToFirst();
+            index = cursor.getColumnIndexOrThrow("currentLat");
+            System.out.println("index"+index);
+            double lat = cursor.getDouble(index);
+            index = cursor.getColumnIndexOrThrow("currentLng");
+            System.out.println("index2"+index);
+            double lng = cursor.getDouble(index);
 
-        LatLng Najd = new LatLng(24.6908935, 46.8410352);
-        float color4 = 240;
-        mMap.addMarker(new MarkerOptions()
-                .position(Najd).icon(BitmapDescriptorFactory.defaultMarker(color4))
-                .title("Najd is here "));
+            LatLng Nouf = new LatLng(lat, lng);
+            float color2 = 120;
+            mMap.addMarker(new MarkerOptions()
+                    .position(Nouf).icon(BitmapDescriptorFactory.defaultMarker(color2))
+                    .title("Nouf is here "));
+        }
+        DB.insertUser("Latifah","123",false,context);
+        if(DB.updateUserLocation("Latifah",24.690918, 46.841349)){
+            Cursor cursor = DB.getUser("Latifah");
+            int index;
+            cursor.moveToFirst();
+            index = cursor.getColumnIndexOrThrow("currentLat");
+            System.out.println("index"+index);
+            double lat = cursor.getDouble(index);
+            index = cursor.getColumnIndexOrThrow("currentLng");
+            System.out.println("index2"+index);
+            double lng = cursor.getDouble(index);
+
+            LatLng Latifah = new LatLng(lat, lng);
+            float color3 = 260;
+            mMap.addMarker(new MarkerOptions()
+                    .position(Latifah).icon(BitmapDescriptorFactory.defaultMarker(color3))
+                    .title("Latifah is here "));
+        }
+        DB.insertUser("Najd","123",false,context);
+        if(DB.updateUserLocation("Najd",24.6908935, 46.8410352)){
+            Cursor cursor = DB.getUser("Najd");
+            int index;
+            cursor.moveToFirst();
+            index = cursor.getColumnIndexOrThrow("currentLat");
+            System.out.println("index"+index);
+            double lat = cursor.getDouble(index);
+            index = cursor.getColumnIndexOrThrow("currentLng");
+            System.out.println("index2"+index);
+            double lng = cursor.getDouble(index);
+
+            LatLng Najd = new LatLng(lat, lng);
+            float color4 = 240;
+            mMap.addMarker(new MarkerOptions()
+                    .position(Najd).icon(BitmapDescriptorFactory.defaultMarker(color4))
+                    .title("Najd is here "));
+        }
+
         mMap.moveCamera(CameraUpdateFactory.newLatLng(devLoc));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
         mMap.getUiSettings().setZoomControlsEnabled(true);
