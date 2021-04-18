@@ -315,7 +315,9 @@ public class database extends SQLiteOpenHelper {
         int index;
         if (groups.moveToFirst() && groups.getCount() > 0){
             do {
-                DB.update("userGroups", contentValues, "username =?", new String[]{oldUser});
+                index = groups.getColumnIndexOrThrow("groupId");
+                int groupId = groups.getInt(index);
+                DB.update("userGroups", contentValues, "groupId =?", new String[]{""+groupId});
             } while (groups.moveToNext());
         }
     }
