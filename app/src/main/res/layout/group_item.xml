@@ -7,7 +7,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:layout_width="346dp"
         android:layout_height="114dp"
         android:background="@drawable/rounded"
@@ -21,29 +21,43 @@
         app:layout_constraintVertical_bias="0.025">
 
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:id="@+id/leave"
+                android:layout_width="44dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="3dp"
+                android:background="@android:color/transparent"
+                app:icon="@drawable/leave" />
+
+            <Button
+                android:id="@+id/invite"
+                android:layout_width="44dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginStart="235dp"
+                android:background="@android:color/transparent"
+                app:icon="@drawable/group_add"/>
+
+        </LinearLayout>
+
+
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/groupName"
             android:layout_width="wrap_content"
-            android:layout_height="55dp"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_margin="10dp"
-            android:padding="10dp"
             android:textColor="@color/white"
             android:textSize="20dp">
 
         </com.google.android.material.textview.MaterialTextView>
 
-        <Button
-            android:id="@+id/invite"
-            android:layout_width="75dp"
-            android:layout_height="35dp"
-            android:layout_marginStart="130dp"
-            android:text="@string/invite"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="10sp">
 
-        </Button>
 
         <LinearLayout
             android:id="@+id/members"

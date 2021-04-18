@@ -33,6 +33,7 @@ public class InviteFormActivity extends AppCompatActivity {
                 String username = usernameInput.getText().toString();
                 if(invite(username)){
                     Toast.makeText(context, username+" was added successfully!", Toast.LENGTH_SHORT).show();
+                    finish();
                 }
                 else {
                     usernameInput.requestFocus();
