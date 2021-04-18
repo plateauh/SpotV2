@@ -39,7 +39,7 @@ public class updateCurrentLocations extends BroadcastReceiver {
                             lat, lng, results);
                     Log.i("distance", ""+results[0]);
 
-                    if(results[0] > 1){
+                    if(results[0] > 500){
                         longDistanceNotification(context, username);
                     }
                 } while(users.moveToNext());
