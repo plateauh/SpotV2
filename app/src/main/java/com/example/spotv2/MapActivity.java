@@ -32,6 +32,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.Calendar;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -66,16 +68,21 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     String provider;
     double lat;
     double lng;
+    int groupID;
+    boolean isGhostMode ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         sharedPreferences = this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        boolean isGhostMode = sharedPreferences.getBoolean("isGhostMode", true);
+       isGhostMode= sharedPreferences.getBoolean("isGhostMode", true);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         context = this;
         repeateAlarm();
+
+        Intent intent = getIntent();
+        groupID = intent.getIntExtra("groupID",0);
 
         locationmanager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -83,6 +90,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         getLocationPermission();
 
     }
+    private Timer autoUpdate;
+
 
     public void onMapReady(GoogleMap googleMap) {
         DB = new database(context);
@@ -99,98 +108,41 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Add a marker in your device location and move the camera
         LatLng devLoc = new LatLng(lat, lng);
-        mMap.setMyLocationEnabled(true);
+        mMap.setMyLocationEnabled(isGhostMode);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-         //DB.insertUser("Thurya","123",false,context);
-        if(DB.updateUserLocation("Thurya",24.686460, 46.840670)){
-            Cursor cursor = DB.getUser("Thurya");
-            int index;
-            cursor.moveToFirst();
-                index = cursor.getColumnIndexOrThrow("currentLat");
-                System.out.println("index"+index);
-                double lat = cursor.getDouble(index);
-                index = cursor.getColumnIndexOrThrow("currentLng");
-                System.out.println("index2"+index);
-                double lng = cursor.getDouble(index);
 
-            LatLng Thurya = new LatLng(lat, lng);
-            float color = 210;
-            mMap.addMarker(new MarkerOptions()
-                    .position(Thurya).icon(BitmapDescriptorFactory.defaultMarker(color))
-                    .title("Thurya is here "));
-        }
-        DB.insertUser("Fay","123",false,context);
-        if(DB.updateUserLocation("Fay",24.687966, 46.840708)){
-            Cursor cursor = DB.getUser("Fay");
-            int index;
-            cursor.moveToFirst();
-            index = cursor.getColumnIndexOrThrow("currentLat");
-            System.out.println("index"+index);
-            double lat = cursor.getDouble(index);
-            index = cursor.getColumnIndexOrThrow("currentLng");
-            System.out.println("index2"+index);
-            double lng = cursor.getDouble(index);
+        String currentUser = sharedPreferences.getString("usernameKey", "");
+        Cursor cursor = DB.getUsersInGroup(groupID);
+            if (cursor.getCount() > 0) {
+                while(cursor.moveToNext()) {
+                    int index_username = cursor.getColumnIndexOrThrow("username");
+                    String username = cursor.getString(index_username);
+                    int lat1 = cursor.getColumnIndexOrThrow("currentLat");
+                    double lat = cursor.getDouble(lat1);
+                    int lng2 = cursor.getColumnIndexOrThrow("currentLng");
+                    double lng = cursor.getDouble(lng2);
+                    if(!currentUser.equals(username)){
 
-            LatLng Fay = new LatLng(lat, lng);
-            float color5 = 180;
-            mMap.addMarker(new MarkerOptions()
-                    .position(Fay).icon(BitmapDescriptorFactory.defaultMarker(color5))
-                    .title("Fay is here "));
-        }
-        DB.insertUser("Nouf","123",false,context);
-        if(DB.updateUserLocation("Nouf",24.690178, 46.840063)){
-            Cursor cursor = DB.getUser("Nouf");
-            int index;
-            cursor.moveToFirst();
-            index = cursor.getColumnIndexOrThrow("currentLat");
-            System.out.println("index"+index);
-            double lat = cursor.getDouble(index);
-            index = cursor.getColumnIndexOrThrow("currentLng");
-            System.out.println("index2"+index);
-            double lng = cursor.getDouble(index);
-
-            LatLng Nouf = new LatLng(lat, lng);
-            float color2 = 120;
-            mMap.addMarker(new MarkerOptions()
-                    .position(Nouf).icon(BitmapDescriptorFactory.defaultMarker(color2))
-                    .title("Nouf is here "));
-        }
-        DB.insertUser("Latifah","123",false,context);
-        if(DB.updateUserLocation("Latifah",24.690918, 46.841349)){
-            Cursor cursor = DB.getUser("Latifah");
-            int index;
-            cursor.moveToFirst();
-            index = cursor.getColumnIndexOrThrow("currentLat");
-            System.out.println("index"+index);
-            double lat = cursor.getDouble(index);
-            index = cursor.getColumnIndexOrThrow("currentLng");
-            System.out.println("index2"+index);
-            double lng = cursor.getDouble(index);
-
-            LatLng Latifah = new LatLng(lat, lng);
-            float color3 = 260;
-            mMap.addMarker(new MarkerOptions()
-                    .position(Latifah).icon(BitmapDescriptorFactory.defaultMarker(color3))
-                    .title("Latifah is here "));
-        }
-        DB.insertUser("Najd","123",false,context);
-        if(DB.updateUserLocation("Najd",24.6908935, 46.8410352)){
-            Cursor cursor = DB.getUser("Najd");
-            int index;
-            cursor.moveToFirst();
-            index = cursor.getColumnIndexOrThrow("currentLat");
-            System.out.println("index"+index);
-            double lat = cursor.getDouble(index);
-            index = cursor.getColumnIndexOrThrow("currentLng");
-            System.out.println("index2"+index);
-            double lng = cursor.getDouble(index);
-
-            LatLng Najd = new LatLng(lat, lng);
-            float color4 = 240;
-            mMap.addMarker(new MarkerOptions()
-                    .position(Najd).icon(BitmapDescriptorFactory.defaultMarker(color4))
-                    .title("Najd is here "));
-        }
+                    if(DB.updateUserLocation(username,24.686460, 46.840670)){
+                        autoUpdate = new Timer();
+                        autoUpdate.schedule(new TimerTask() {
+                            @Override
+                            public void run() {
+                                runOnUiThread(new Runnable() {
+                                    public void run() {
+                                        LatLng user = new LatLng(lat, lng);
+                                        float color = 210;
+                                        mMap.addMarker(new MarkerOptions()
+                                                .position(user).icon(BitmapDescriptorFactory.defaultMarker(color))
+                                                .title(username+" is here "));
+                                    }
+                                });
+                            }
+                        }, 0, 4000); // updates each 4 secs
+                    }
+                }
+                }
+       }
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(devLoc));
         mMap.animateCamera(CameraUpdateFactory.zoomTo(15));
@@ -258,9 +210,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         AlarmManager am=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, updateCurrentLocations.class);
+        i.putExtra("groupID",groupID);
+        i.putExtra("lat",lat);
+        i.putExtra("lng",lng);
         final PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, 0);
         am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60, pi);
     }
+
 
 
 }
