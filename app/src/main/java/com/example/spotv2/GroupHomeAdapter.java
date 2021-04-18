@@ -2,6 +2,7 @@ package com.example.spotv2;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,6 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
 
     int GroupsIDs[];
     String[] GroupNames;
-
     Context context;
 
 
@@ -49,10 +49,14 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView idText;
-        Button inviteBtn;
+        Button inviteBtn, leaveBtn;
+        database DB;
+        SharedPreferences sharedpreferences;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            DB = new database(context);
+            sharedpreferences = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -69,6 +73,16 @@ public class GroupHomeAdapter extends RecyclerView.Adapter<GroupHomeAdapter.MyVi
                 Intent intent = new Intent(context, InviteFormActivity.class);
                 intent.putExtra("groupID", GroupsIDs[getAdapterPosition()]);
                 context.startActivity(intent);
+            });
+            leaveBtn = itemView.findViewById(R.id.leave);
+            leaveBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String username = sharedpreferences.getString("usernameKey","");
+                    DB.deleteUserGroup(username, GroupsIDs[getAdapterPosition()]);
+                    Intent intent = new Intent(context, HomePage2Activity.class);
+                    context.startActivity(intent);
+                }
             });
         }
     }
