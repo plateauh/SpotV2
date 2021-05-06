@@ -150,8 +150,7 @@ public class SettingsActivity extends AppCompatActivity {
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImageUri);
                         byte[] img = DbBitmapUtility.getBytes(bitmap);
-                        String username = preferences.getString("usernameKey","");
-                        DB.updateUserImg(img, username);
+                        DB.updateUserImg(img, loggedInUser);
                         Toast.makeText(this,"profile Image updated successful", Toast.LENGTH_SHORT ).show();
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -166,7 +165,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         Cursor cursor = DB.getUser(loggedInUser);
         while (cursor.moveToNext()){
-
             int index;
             index = cursor.getColumnIndexOrThrow("profileImg");
             byte[] blob = cursor.getBlob(index);

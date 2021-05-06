@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         if (user.isEmpty()) return false;
         return true;
     }
-
+  
     public void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -114,4 +114,5 @@ public class LoginActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(channel);
         }
     }
+
 }

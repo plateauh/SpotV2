@@ -96,6 +96,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                             finish();
                         }
                         else {
+
                             Toast.makeText(ChangeUsernameActivity.this, "Oops, there is an error", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -133,5 +134,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }

@@ -22,6 +22,7 @@ public class updateCurrentLocations extends BroadcastReceiver {
         double current_user_lat = sharedPreferences.getFloat("lat", 0);
         double current_user_lng = sharedPreferences.getFloat("lng", 0);
         Log.i("info inside broadcast", "Group ID: "+groupId+" lat: "+current_user_lat+" lng: "+current_user_lng);
+
         Cursor users = DB.getUsersInGroup(groupId);
 
         try{

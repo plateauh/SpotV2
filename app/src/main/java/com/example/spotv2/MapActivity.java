@@ -53,7 +53,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Boolean mLocationPermissionsGranted = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationProviderClient;
-
+    int groupID;
 
     private void initMap() {
 
@@ -82,6 +82,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Intent intent = getIntent();
         groupID = intent.getIntExtra("groupID",0);
         Log.i("Map Class","GroupID: "+ groupID);
+
 
         locationmanager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = LocationManager.GPS_PROVIDER;
@@ -226,11 +227,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         AlarmManager am=(AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent i = new Intent(context, updateCurrentLocations.class);
         i.putExtra("groupID",groupID);
+
         Log.i("repeat alarm", "GroupID: "+groupID);
-//        i.putExtra("lat",lat);
-//        i.putExtra("lng",lng);
+      
         Log.i("info", "Group ID: "+groupID+" lat: "+lat+" lng: "+lng);
         final PendingIntent pi = PendingIntent.getBroadcast(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+
         am.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), 1000 * 60, pi);
     }
 

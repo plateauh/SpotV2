@@ -50,6 +50,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         cancelPassButton = findViewById(R.id.cancelPassButton);
         changePassButton = findViewById(R.id.changePassButton);
         preferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
         loggedInUser = preferences.getString("usernameKey","");
         DB = new database(this);
 
