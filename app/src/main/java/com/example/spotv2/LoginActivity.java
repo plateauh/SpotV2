@@ -24,6 +24,7 @@ public class LoginActivity extends AppCompatActivity {
 
     SharedPreferences sharedpreferences;
     NotificationManager notificationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,8 +97,7 @@ public class LoginActivity extends AppCompatActivity {
         if (user.isEmpty()) return false;
         return true;
     }
-
-
+  
     public void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library

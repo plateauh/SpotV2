@@ -47,10 +47,12 @@ public class ChangeUsernameActivity extends AppCompatActivity {
         cancelUserNameButton = findViewById(R.id.cancelUserNameButton);
         changeUsernameButton = findViewById(R.id.changeUsernameButton);
         DB = new database(this);
+
         preferences = getSharedPreferences(
                 "MyPrefs", Context.MODE_PRIVATE);
         loggedInUser = preferences.getString("usernameKey","");
         username.setText(loggedInUser);
+
         DialogsBuilder();
 
         changeUsernameButton.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +76,7 @@ public class ChangeUsernameActivity extends AppCompatActivity {
 
     public void DialogsBuilder() {
 
-        //savechanges dialog
+        // savechanges dialog
         saveChangesDialog =  new AlertDialog.Builder(this)
                 .setTitle("Save Changes")
                 .setMessage("Are you sure you want to change your username?")
@@ -91,7 +93,10 @@ public class ChangeUsernameActivity extends AppCompatActivity {
                         if(isDataUpdated) {
                             Toast.makeText(ChangeUsernameActivity.this, "Username Updated", Toast.LENGTH_SHORT).show();
                             preferences.edit().putString("usernameKey",newUsername.getText().toString()).apply();
-                            finish();                        }else {
+                            finish();
+                        }
+                        else {
+
                             Toast.makeText(ChangeUsernameActivity.this, "Oops, there is an error", Toast.LENGTH_SHORT).show();
                         }
                     }
